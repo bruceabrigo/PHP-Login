@@ -1,13 +1,32 @@
-# establish version
 version: '3'
 
-# setup enviornment services
 services:
-  www: 
+  www:
+    build: 
+      context: .
+      dockerfile: Dockerfile
     image: php:7.4-apache
     volumes:
       - "./:/var/www/html"
     ports:
-      - "80:80"
-      - "443:443"
-    
+      - 80:80
+      - 443:443
+  # setup databse service w MySQL
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=php_docker
+      - MYSQL_USER=php_docker
+      - MYSQL_PASSWORD=password 
+      - MYSQL_ROOT_PASSWORD=password 
+      - MySQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+    # create a local volume to store db to a local enviornment
+      - "./db:/docker-entrypoint-initdb.d" #sync persistent sql files with container
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
