@@ -1,0 +1,13 @@
+# establish version
+version: '3'
+
+# setup enviornment services
+services:
+  www: 
+    image: php:7.4-apache
+    volumes:
+      - "./:/var/www/html"
+    ports:
+      - "80:80"
+      - "443:443"
+    
