@@ -8,39 +8,35 @@
 <body>
 
 <?php
-
-// connect to sql cluster with mysqli
 $connect = mysqli_connect(
-    'db',
-    'php_docker',
-    'password',
+    'db', 
+    'php_docker', 
+    'password', 
     'php_docker'
 );
 
-$email = $_POST["email"];
-$username = $_POST["username"];
-$password = $_POST["password"];
+if (!$connect) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
-// create a variable that calls to the users data table
-$table_name = 'users';
+// Check if the form has been submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") { # check for POST request method
+    $email = $_POST["email"];
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $table_name = 'users';
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $create_user = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashedPassword')";
+    $response = mysqli_query($connect, $create_user);
 
-// Hash the password (for security)
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-// create an INSERT INTO query to create a new User in the users table
-$create_user = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashedPassword')";
-
-// run a connection query response
-$response = mysqli_query($connect, $create_user);
-
-if ($response) {
-    echo "<h3>User created Successfully!</h3>";
-} else {
-    echo "<h3>Error creating user...</h3>";
+    if ($response) { # if the form is completed successfully display a success message
+        echo "<p style='color: green;'>User Created Successfully</p>";
+    } else { # otherwise display an error
+        echo "<p style='color: red;'>Error creating new user: " . mysqli_error($connect) . "</p>";
+    }
 }
 
 mysqli_close($connect);
-
 ?>
 
 <h2>User Registration Form</h2>
