@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { # check for POST request method
 
     if ($response) { # if the form is completed successfully display a success message
         echo "<p style='color: green;'>User Created Successfully</p>";
+        echo "<p style='color: blue;'>Login</p>";
     } else { # otherwise display an error
         echo "<p style='color: red;'>Error creating new user: " . mysqli_error($connect) . "</p>";
     }
@@ -41,7 +42,7 @@ mysqli_close($connect);
 
 <h2>User Registration Form</h2>
 
-<form method="post" action="">
+<form method="POST" action="">
     <label for="email">Email:</label>
     <input type="email" name="email" required><br>
 

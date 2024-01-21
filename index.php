@@ -9,8 +9,8 @@
 <body>
     <div class="login-container">
         <div class="login-items">
-            <p class="href">Login to Existing User</p>
-            <p class="href">Create New User</p>
+            <a href="login.php">Login to existing user</a>
+            <a href="newUser.php">New User</a>
         </div>
     </div>
 </body>
